@@ -61,10 +61,15 @@ export class Router {
       const route = this.find(request.method, request.url);
 
       if (route) {
-        const { handler } = route;
+        const { handler, contentType, accessControlAllowOrigin } = route;
 
         const response = new Response(handler(request), {
           status: 200,
+
+          headers: new Headers({
+            "content-type": contentType,
+            "Access-Control-Allow-Origin": accessControlAllowOrigin,
+          }),
         });
 
         await respondWith(response);
@@ -101,6 +106,8 @@ class Route {
   type: string;
   path: string;
   handler: Function;
+  contentType = "text/plain";
+  accessControlAllowOrigin = "*";
 
   constructor(type: string, path: string, handler: Function) {
     this.type = type;

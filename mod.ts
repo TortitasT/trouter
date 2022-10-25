@@ -43,12 +43,12 @@ export class Router {
   }
 
   find(method: string, path: string): Route | undefined {
-    const formattedPath = path.split("/").findLast((p) => p !== "") || "/";
+    const url = new URL(path);
 
-    console.log(formattedPath);
+    console.log(url.pathname);
 
     return this.routes.find((route) => {
-      return route.type === method && route.path === formattedPath;
+      return route.type === method && route.path === url.pathname;
     });
   }
 
